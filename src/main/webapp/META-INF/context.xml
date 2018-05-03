@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <property-placeholder location="classpath:liquibase.properties"  ignore-unresolvable="true"/>
+    <Resource name="jdbc/RepairAgencyDB" auth="Container"
+    type="javax.sql.DataSource"
+    username="root" password="15fghtkm"
+    driverClassName="com.mysql.jdbc.Driver"
+    url="jdbc:mysql://127.0.0.1:3306/repairagency"
+    maxActive="5" maxIdle="4"/>
+</Context>
