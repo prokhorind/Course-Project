@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    <changeSet id="create_user_table" author="Denis" runOnChange="true">
+        <createTable tableName="User">
+            <column autoIncrement="true" name="userId" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints />
+            </column>
+            <column name="surname" type="VARCHAR(255)">
+                <constraints />
+            </column>
+            <column name="login" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_comment_table" author="Denis" runOnChange="true">
+        <createTable tableName="Comment">
+            <column autoIncrement="true" name="commentId" type="BIGINT">
+                <constraints nullable="false"  primaryKey="true"/>
+            </column>
+            <column name="message" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="userId" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="com_userId" deleteCascade="true" references="User(userId)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_role_table" author="Denis" runOnChange="true">
+        <createTable tableName="Role">
+            <column autoIncrement="true" name="roleId" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_user_role_list_table" author="Denis" runOnChange="true">
+        <createTable tableName="userRole">
+            <column autoIncrement="true" name="urId" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="userId" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="ur_userId" deleteCascade="true"  references="User(userId)"/>
+            </column>
+            <column name="roleId" type="BIGINT">
+                <constraints  nullable="false" foreignKeyName="ur_roleId" references="Role(roleId)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_order_table" author="Denis" runOnChange="true">
+        <createTable tableName="Orders">
+            <column autoIncrement="true" name="orderId" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="userId" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="ord_userId" deleteCascade="true" references="User(userId)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_detail_table" author="Denis" runOnChange="true">
+        <createTable tableName="Details">
+            <column autoIncrement="true" name="detailId" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reason" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="orderId" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="det_orderId" deleteCascade="true" references="Orders(orderId)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_approved_order_table" author="Denis" runOnChange="true">
+        <createTable tableName="ApprovedOrder">
+            <column  name="aoId" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"  foreignKeyName="apr_orderId" deleteCascade="true" references="Orders(orderId)"/>
+            </column>
+            <column name="price" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_disapproved_order_table" author="Denis" runOnChange="true">
+        <createTable tableName="DisapprovedOrder">
+            <column  name="daoId" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"  foreignKeyName="dis_orderId" deleteCascade="true" references="Orders(orderId)"/>
+            </column>
+            <column name="reason" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
