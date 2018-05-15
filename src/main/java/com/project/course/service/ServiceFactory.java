@@ -7,6 +7,7 @@ public class ServiceFactory {
     private final OrderService orderService = new OrderService();
     private final DetailService detailService = new DetailService();
     private final CommentService commentService = new CommentService();
+    private final UserService userService = new UserService();
     public static ServiceFactory getInstatice(){
         return serviceFactory;
     }
@@ -30,4 +31,6 @@ public class ServiceFactory {
     public CommentService getCommentService() {
         return commentService;
     }
+
+    public UserService getUserService() {return userService;}
 }

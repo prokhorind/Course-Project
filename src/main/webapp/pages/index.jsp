@@ -43,9 +43,6 @@
         <div class="comments">
             Comments<br>
             <c:forEach var="comment" items="${comments}">
-              <%--  <li>
-                    <c:out value=" ${comment}"></c:out>
-                </li>--%>
                 <div class="message-orange">
                     <p class="message-content">From: ${comment.username}</p>
                     <p class="message-content">${comment.comment}!</p>

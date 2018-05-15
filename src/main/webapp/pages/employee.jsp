@@ -24,7 +24,7 @@
                     <tr>
                         <td> <c:out value=" ${order.date}"></c:out></td>
                         <td> <c:out value=" ${order.status}"></c:out></td>
-                        <td><c:out value=" ${order.orderId}"></c:out></td>
+                        <td><a href="${pageContext.request.contextPath}/start?command=orderinfo&id=${order.orderId}"><c:out value="${order.orderId}"></c:out></a></td>
                         <td><input type="checkbox" name="select" id="${order.orderId}"  value="${order.orderId}">  </td>
                     </tr>
                 </c:forEach>

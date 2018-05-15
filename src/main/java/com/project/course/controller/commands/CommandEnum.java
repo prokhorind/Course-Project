@@ -70,6 +70,11 @@ public enum CommandEnum {
             this.command= new OrderCommand();
         }
     },
+    ORDERINFO{
+        {
+            this.command = new OrderInfoCommand();
+        }
+    },
     CHANGECOMMENTS{
         {
             this.command = new ChangeCommentsCommand();

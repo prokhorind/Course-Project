@@ -76,7 +76,6 @@ public class OrderDaoImpl implements OrderDao {
         Set<Order> orderSet = new HashSet<>();
         ConnectionWrapper con = TransactionUtil.getConnection();
         String sql ="SELECT * FROM Orders LIMIT ? OFFSET ?;";
-
         try {
             PreparedStatement preparedStatement= con.createPreparedStatement(sql);
             preparedStatement.setLong(1,numberOfOrders);
@@ -147,6 +146,28 @@ public class OrderDaoImpl implements OrderDao {
         }
         return orderSet;
     }
+
+    @Override
+    public long getUserIdByOrderId(long orderId) throws DataBaseException, DAOException {
+        long id;
+        ConnectionWrapper con = TransactionUtil.getConnection();
+        String sql ="SELECT userId FROM Orders where orderId=?";
+        PreparedStatement preparedStatement= null;
+        try {
+            preparedStatement = con.createPreparedStatement(sql);
+            preparedStatement.setLong(1,orderId);
+            ResultSet rs= preparedStatement.executeQuery();
+            if(rs.next()){
+                id=rs.getLong(1);
+            }else{
+                throw new  SQLException();
+            }
+        } catch (SQLException e) {
+            throw  new DAOException(e);
+        }
+        return id;
+    }
+
 
     @Override
     public long countOrders() throws DataBaseException, DAOException {

@@ -72,4 +72,24 @@ public class DetailDaoImpl implements DetailDao {
         }
         return detailSet;
     }
+
+    @Override
+    public Set<Detail> getDetails(long orderId) throws DataBaseException, DAOException {
+        Set<Detail>  detailSet = new HashSet<>();
+        ConnectionWrapper con = TransactionUtil.getConnection();
+        String sql = "Select * from details where orderId = ?";
+        try {
+            PreparedStatement preparedStatement = con.createPreparedStatement(sql);
+            preparedStatement.setLong(1, orderId);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Detail detail = new Detail(rs.getLong(1), rs.getString(2),rs.getString(3),rs.getLong(4));
+                detailSet.add(detail);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+        return detailSet;
+    }
 }
+

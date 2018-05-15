@@ -7,7 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<!DOCTYPE  html>
 <html>
 <head>
     <script>
@@ -40,7 +40,7 @@
                  <tr>
                    <td> <c:out value=" ${order.date}"></c:out></td>
                    <td> <c:out value=" ${order.status}"></c:out></td>
-                    <td><c:out value=" ${order.orderId}"></c:out></td>
+                    <td><a href="${pageContext.request.contextPath}/start?command=orderinfo&id=${order.orderId}"><c:out value="${order.orderId}"></c:out></a></td>
                 </tr>
                  </c:forEach>
                 </table>

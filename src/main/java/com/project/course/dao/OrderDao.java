@@ -17,6 +17,7 @@ public interface OrderDao {
     Set<Order> getOrders(long from, long numberOfOrders) throws DataBaseException, DAOException;
     Set<Order> getOrders(long from, long numberOfOrders, OrderStatus orderStatus) throws DataBaseException, DAOException;
     Set<Order> getOrders(long from, long numberOfOrders,long userId) throws DataBaseException, DAOException;
+    long getUserIdByOrderId(long orderId)throws DataBaseException, DAOException;
     long countOrders()throws DataBaseException, DAOException;
     long countOrders(long userId)throws DataBaseException, DAOException;
     long countOrders(OrderStatus orderStatus) throws DataBaseException, DAOException;

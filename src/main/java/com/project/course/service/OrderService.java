@@ -169,6 +169,27 @@ public class OrderService {
         }
     }
 
+    public long getUserIdByOrderId(long orderId)throws ServiceException{
+        long userId;
+        try {
+            userId =0;
+            try {
+                TransactionUtil.beginTransaction();
+
+                    userId = orderDao.getUserIdByOrderId(orderId);
+
+                TransactionUtil.commit();
+            } catch (DAOException e) {
+                TransactionUtil.rollback();
+                throw new ServiceException(e);
+            }finally {
+                TransactionUtil.endTransaction();
+            }
+        }catch (DataBaseException e){
+            throw new ServiceException(e);
+        }
+        return userId;
+    }
     public void deleteOrders(List <String> ids) throws ServiceException {
         try {
             try {
