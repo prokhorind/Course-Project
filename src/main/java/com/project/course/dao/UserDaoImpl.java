@@ -78,13 +78,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public long getUserIdByEmail(String email) throws DAOException, DataBaseException {
+    public long getUserId(String login) throws DAOException, DataBaseException {
         ConnectionWrapper con = TransactionUtil.getConnection();
-        String sql ="Select userId from user where email=?";
+        String sql ="Select userId from user where login=?";
         long userId=0;
         try {
             PreparedStatement preparedStatement= con.createPreparedStatement(sql);
-            preparedStatement.setString(1,email);
+            preparedStatement.setString(1,login);
             ResultSet rs=preparedStatement.executeQuery();
             if(rs.next()){
                 userId=rs.getLong(1);
@@ -120,5 +120,24 @@ public class UserDaoImpl implements UserDao {
             throw  new DAOException(e);
         }
         return userSet;
+    }
+
+    @Override
+    public long getUserId(String login, String password) throws DAOException, DataBaseException {
+        ConnectionWrapper con = TransactionUtil.getConnection();
+        String sql ="Select userId from user where login=? and password=?";
+        long userId=0;
+        try {
+            PreparedStatement preparedStatement= con.createPreparedStatement(sql);
+            preparedStatement.setString(1,login);
+            preparedStatement.setString(2,password);
+            ResultSet rs=preparedStatement.executeQuery();
+            if(rs.next()){
+                userId=rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            throw  new DAOException(e);
+        }
+        return userId;
     }
 }

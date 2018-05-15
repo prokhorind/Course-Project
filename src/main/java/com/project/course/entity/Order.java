@@ -1,5 +1,8 @@
 package com.project.course.entity;
 
+import com.project.course.util.OrderStatus;
+
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
@@ -20,6 +23,11 @@ public class Order {
         this.userId = userId;
     }
 
+    public Order(long userId){
+        this.userId = userId;
+        this.status = OrderStatus.REG.toString();
+        this.date = new Date(new java.util.Date().getTime());
+    }
     public long getOrderId() {
         return orderId;
     }
@@ -61,6 +69,16 @@ public class Order {
                 userId == order.userId &&
                 Objects.equals(date, order.date) &&
                 Objects.equals(status, order.status);
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", date=" + date +
+                ", status='" + status + '\'' +
+                ", userId=" + userId +
+                '}';
     }
 
     @Override

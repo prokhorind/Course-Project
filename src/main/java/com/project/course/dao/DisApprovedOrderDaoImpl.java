@@ -19,10 +19,11 @@ public class DisApprovedOrderDaoImpl implements DisApprovedOrderDao {
     @Override
     public void addDisApprovedOrder(DisApprovedOrder disapprovedOrder) throws DAOException, DataBaseException {
         ConnectionWrapper con = TransactionUtil.getConnection();
-        String sql = "Insert into disapprovedorder(reason) values(?)";
+        String sql = "Insert into disapprovedorder(daoId,reason) values(?,?)";
         try {
             PreparedStatement ps = con.createPreparedStatement(sql);
-            ps.setString(1, disapprovedOrder.getReason());
+            ps.setLong(1,disapprovedOrder.getOrderId());
+            ps.setString(2, disapprovedOrder.getReason());
             ps.execute();
         } catch (SQLException e) {
             throw new DAOException(e);

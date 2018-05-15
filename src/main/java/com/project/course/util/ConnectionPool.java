@@ -19,7 +19,7 @@ public class ConnectionPool {
         InitialContext context = null;
         try {
             context = new InitialContext();
-            dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/CrickBossDB");
+            dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/RepairAgencyDB");
             return dataSource.getConnection();
 
         } catch (NamingException e) {

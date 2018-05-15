@@ -54,7 +54,7 @@ public class RoleDaoImpl implements RoleDao {
     public Role getRoleById(long id)throws DAOException, DataBaseException {
         ConnectionWrapper con = TransactionUtil.getConnection();
         String sql ="Select * from Role where roleId=?";
-        Role role = null;
+        Role role = new Role();
         try {
             PreparedStatement preparedStatement= con.createPreparedStatement(sql);
             preparedStatement.setLong(1,id);
@@ -64,6 +64,7 @@ public class RoleDaoImpl implements RoleDao {
                 role.setName(rs.getString(2));
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw  new DAOException(e);
         }
         return role;

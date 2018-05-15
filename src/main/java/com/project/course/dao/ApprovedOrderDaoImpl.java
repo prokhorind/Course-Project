@@ -21,10 +21,11 @@ public class ApprovedOrderDaoImpl implements ApprovedOrderDao {
     @Override
     public void addApprovedOrder(ApprovedOrder approvedOrder) throws DAOException, DataBaseException {
         ConnectionWrapper con = TransactionUtil.getConnection();
-        String sql = "Insert into approvedorder(price) values(?)";
+        String sql = "Insert into approvedorder(aoId,price) values(?,?)";
         try {
             PreparedStatement ps = con.createPreparedStatement(sql);
-            ps.setString(1, String.valueOf(approvedOrder.getPrice()));
+            ps.setLong(1,approvedOrder.getOrderId());
+            ps.setString(2, String.valueOf(approvedOrder.getPrice()));
             ps.execute();
         } catch (SQLException e) {
             throw new DAOException(e);

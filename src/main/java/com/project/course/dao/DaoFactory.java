@@ -11,7 +11,7 @@ public class DaoFactory {
     private CommentDao commentDao = new CommentDaoImpl();
     private ApprovedOrderDao approvedOrderDao = new ApprovedOrderDaoImpl();
     private DisApprovedOrderDao disApprovedOrderDao = new DisApprovedOrderDaoImpl();
-
+    private MailDao mailDao = new MailDaoImpl();
     public static DaoFactory getInstance(){
         return factory;
     }
@@ -46,5 +46,9 @@ public class DaoFactory {
 
     public OrderDao getOrderDao() {
         return orderDao;
+    }
+
+    public MailDao getMailDao() {
+        return mailDao;
     }
 }

@@ -5,8 +5,12 @@
   Time: 22:33
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@include file="/pages/i18n.jsp" %>
+<!DOCTYPE  html>
+<html lang="${language}">
 <head>
     <title>Registration form</title>
     <style type="text/css">
@@ -14,13 +18,16 @@
         </style>
 </head>
 <body>
+<a href="${pageContext.request.contextPath}/start?lang=en&command=changelang&page=reg.jsp"><img src="${pageContext.request.contextPath}/pages/picture/united-kingdom_l.png" width="25" height="15"></a>
+<a href="${pageContext.request.contextPath}/start?lang=ru&command=changelang&page=reg.jsp"><img src="${pageContext.request.contextPath}/pages/picture/russia_l.png" width="25" height="15"></a>
 <div class="form">
-    <form class="register-form" action="${pageContext.request.contextPath}/registration" method="post">
-        <input type="text" placeholder="login" name="login" id="login"/>
-        <input type="password" placeholder="password" name="password" id="password"/>
-        <input type="text" placeholder="email address" name="email" id="email"/>
+    <form class="register-form" action="${pageContext.request.contextPath}/start" method="post">
+        <input type="text" placeholder="<fmt:message key="reg.login" bundle="${bundle}"/>" name="login" id="login"/>
+        <input type="password" placeholder="<fmt:message key="reg.pass" bundle="${bundle}"/>" name="password" id="password"/>
+        <input type="text" placeholder="<fmt:message key="reg.email" bundle="${bundle}"/>" name="email" id="email"/>
+        <input type="hidden" name="command" value="reg"/>
         <button>create</button>
-        <p class="message">Already registered? <a href="${pageContext.request.contextPath}/">Sign In</a></p>
+        <p class="message">Already registered? <a href="${pageContext.request.contextPath}/start">Sign In</a></p>
     </form>
     </div>
 </body>

@@ -9,4 +9,14 @@
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errors/error.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.RuntimeException</exception-type>
+        <location>/errors/wrongcommand.jsp</location>
+    </error-page>
+
 </web-app>

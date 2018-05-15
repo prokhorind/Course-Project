@@ -12,6 +12,6 @@
 </head>
 <body>
 <h1>Opps...</h1>
-<p>An error occurred.</p>
+<p>An error with code ${pageContext.errorData.statusCode} occurred.</p>
 </body>
 </html>

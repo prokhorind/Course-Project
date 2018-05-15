@@ -18,6 +18,12 @@ public class Comment {
         this.userId = userId;
     }
 
+    public Comment(long userId, String message){
+        this.userId = userId;
+        this.date = new Date(new java.util.Date().getTime());
+        this.message = message;
+    }
+
     public Comment(long commentId, String message, Date date, long userId) {
         this.commentId = commentId;
         this.message = message;

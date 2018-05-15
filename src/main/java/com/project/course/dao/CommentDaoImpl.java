@@ -33,7 +33,7 @@ public class CommentDaoImpl implements CommentDao {
             try {
                 con.close();
             }catch(SQLException e){
-                throw new DataBaseException(e);
+                throw new   DAOException(e);
             }
         }
     }
@@ -72,15 +72,15 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public List<Comment> getComments(long from, long to) throws DAOException,DataBaseException {
+    public List<Comment> getComments(long limit, long offset) throws DAOException,DataBaseException {
         List<Comment> commentList = new ArrayList<>();
         ConnectionWrapper con = TransactionUtil.getConnection();
         String sql ="Select * from Comment LIMIT ? OFFSET ?";
 
         try {
             PreparedStatement preparedStatement= con.createPreparedStatement(sql);
-            preparedStatement.setLong(1,to);
-            preparedStatement.setLong(2,from);
+            preparedStatement.setLong(1,limit);
+            preparedStatement.setLong(2,offset);
             ResultSet rs= preparedStatement.executeQuery();
             while (rs.next()){
                 Comment comment = new Comment(rs.getLong(1),rs.getString(2),rs.getDate(3),rs.getLong(4));
@@ -90,5 +90,48 @@ public class CommentDaoImpl implements CommentDao {
             throw  new DAOException(e);
         }
         return commentList;
+    }
+
+    @Override
+    public List<com.project.course.dto.Comment> getDTOComments(long limit, long offset) throws DAOException, DataBaseException {
+        List<com.project.course.dto.Comment> commentList = new ArrayList<>();
+        ConnectionWrapper con = TransactionUtil.getConnection();
+
+        String sql ="Select comment.message,comment.date ,user.login from Comment,User where comment.userId = user.userId  LIMIT ? OFFSET ?";
+
+        try {
+            PreparedStatement preparedStatement= con.createPreparedStatement(sql);
+            preparedStatement.setLong(1,limit);
+            preparedStatement.setLong(2,offset);
+            ResultSet rs= preparedStatement.executeQuery();
+            while (rs.next()){
+                com.project.course.dto.Comment comment = new com.project.course.dto.Comment(rs.getString(3)
+                        ,rs.getDate(2),rs.getString(1));
+                commentList.add(comment);
+            }
+        } catch (SQLException e) {
+            throw  new DAOException(e);
+        }
+        return commentList;
+    }
+
+    @Override
+    public long getComments() throws DataBaseException, DAOException {
+        long number;
+        ConnectionWrapper con = TransactionUtil.getConnection();
+        String sql ="SELECT COUNT(commentId)FROM Comment";
+        PreparedStatement preparedStatement= null;
+        try {
+            preparedStatement = con.createPreparedStatement(sql);
+            ResultSet rs= preparedStatement.executeQuery();
+            if(rs.next()){
+                number=rs.getLong(1);
+            }else{
+                throw new  SQLException();
+            }
+        } catch (SQLException e) {
+            throw  new DAOException(e);
+        }
+        return number;
     }
 }

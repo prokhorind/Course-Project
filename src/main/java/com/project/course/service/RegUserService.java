@@ -1,16 +1,17 @@
 package com.project.course.service;
 
 
-import com.project.course.dao.DaoFactory;
-import com.project.course.dao.RoleDao;
-import com.project.course.dao.UserDao;
-import com.project.course.dao.UserRoleDao;
+import com.project.course.dao.*;
 import com.project.course.entity.User;
 import com.project.course.exception.DAOException;
 import com.project.course.exception.DataBaseException;
+import com.project.course.exception.MailException;
 import com.project.course.exception.ServiceException;
 import com.project.course.transaction.TransactionUtil;
+import com.project.course.util.Roles;
 import org.apache.commons.codec.digest.DigestUtils;
+
+import javax.transaction.Transaction;
 
 public class RegUserService {
     private final DaoFactory factory = DaoFactory.getInstance();
@@ -25,10 +26,11 @@ public class RegUserService {
                 TransactionUtil.beginTransaction();
                 user.setPass(DigestUtils.md5Hex(user.getPass()).toUpperCase());
                 userDao.insertUser(user);
-                long userId=userDao.getUserIdByEmail(user.getEmail());
-                long roleId=roleDao.getRoleId("member");
+                long userId=userDao.getUserId(user.getLogin());
+                long roleId=roleDao.getRoleId(Roles.MEMBER.toString());
                 userRoleDao.addUserRole(roleId,userId);
                 TransactionUtil.commit();
+                sendEmail(user);
             } catch (DAOException e) {
                TransactionUtil.rollback();
             } finally {
@@ -36,6 +38,14 @@ public class RegUserService {
             }
         } catch (DataBaseException e) {
             throw new ServiceException(e);
+        }
+    }
+    public void sendEmail(User user) throws ServiceException {
+        MailDao mailDao = factory.getMailDao();
+        try {
+            mailDao.send(user);
+        } catch (MailException e) {
+            throw  new ServiceException(e);
         }
     }
 }

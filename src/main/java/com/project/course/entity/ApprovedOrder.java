@@ -17,6 +17,10 @@ public class ApprovedOrder {
         this.price = price;
     }
 
+    public ApprovedOrder(BigDecimal price) {
+        this.price = price;
+    }
+
     public long getOrderId() {
         return orderId;
     }

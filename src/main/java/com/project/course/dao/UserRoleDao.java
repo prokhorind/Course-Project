@@ -9,4 +9,5 @@ import com.project.course.exception.DataBaseException;
 public interface UserRoleDao {
     void addUserRole(long roleId,long userId) throws DAOException, DataBaseException;
     void updateUserRole(long roleId,long userId) throws DAOException, DataBaseException;
+    long getRoleId(long userId) throws DAOException, DataBaseException;
 }

@@ -4,8 +4,8 @@
     <property-placeholder location="classpath:liquibase.properties"  ignore-unresolvable="true"/>
     <Resource name="jdbc/RepairAgencyDB" auth="Container"
     type="javax.sql.DataSource"
-    username="root" password="pass"
+    username="root" password="15fghtkm"
     driverClassName="com.mysql.jdbc.Driver"
     url="jdbc:mysql://127.0.0.1:3306/repairagency"
-    maxActive="9" maxIdle="4"/>
+    maxActive="5" maxIdle="4"/>
 </Context>

@@ -13,6 +13,7 @@ public interface UserDao {
     void insertUser(User user)throws DAOException, DataBaseException;
     User getUserById(long id)throws DAOException, DataBaseException;
     void deleteUser(long id)throws DAOException, DataBaseException;
-    long getUserIdByEmail(String email)throws DAOException, DataBaseException;
+    long getUserId(String login)throws DAOException, DataBaseException;
     Set<User> getUsers(long from,long to)throws DAOException, DataBaseException;
+    long getUserId(String login,String password)throws DAOException, DataBaseException;
 }

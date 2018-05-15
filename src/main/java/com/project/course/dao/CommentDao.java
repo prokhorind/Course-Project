@@ -14,4 +14,6 @@ public interface CommentDao {
     void deleteComment(long id) throws DAOException, DataBaseException;
     void updateCommentMessage(long id,String message)throws DAOException, DataBaseException;
     List<Comment> getComments(long from,long to) throws DataBaseException, DAOException;
+    List<com.project.course.dto.Comment> getDTOComments(long from,long to)throws DAOException, DataBaseException;
+    long getComments() throws DataBaseException, DAOException;
 }

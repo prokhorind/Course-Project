@@ -6,6 +6,7 @@ import com.project.course.transaction.ConnectionWrapper;
 import com.project.course.transaction.TransactionUtil;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -50,5 +51,31 @@ public class UserRoleDaoImp implements UserRoleDao {
                 throw new DataBaseException(e);
             }
         }
+    }
+
+    @Override
+    public long getRoleId(long userId) throws DAOException, DataBaseException {
+        ConnectionWrapper con = TransactionUtil.getConnection();
+        String sql ="Select roleId  from userrole  where userId=?";
+        long roleId = 0;
+        try {
+            PreparedStatement ps= con.createPreparedStatement(sql);
+            ps.setLong(1,userId);
+           ResultSet rs= ps.executeQuery();
+            if(rs.next()){
+                roleId=rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw  new DAOException(e);
+        }finally{
+            try {
+                con.close();
+            }catch(SQLException e){
+                e.printStackTrace();
+                throw new DataBaseException(e);
+            }
+        }
+        return roleId;
     }
 }
