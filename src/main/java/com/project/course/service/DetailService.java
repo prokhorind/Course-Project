@@ -7,8 +7,9 @@ import com.project.course.exception.DAOException;
 import com.project.course.exception.DataBaseException;
 import com.project.course.exception.ServiceException;
 import com.project.course.transaction.TransactionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,48 +18,45 @@ import java.util.Set;
 public class DetailService {
     private final DaoFactory factory = DaoFactory.getInstance();
     private DetailDao detailDao = factory.getDetailDao();
-    public void addDetail(String[] names,String[] reasons , long userId){
+    private Logger logger = LoggerFactory.getLogger(DetailService.class);
 
-
+    public void addDetail(String[] names, String[] reasons, long orderId) throws ServiceException {
         try {
-            TransactionUtil.beginTransaction();
-            for(int i=0;i<names.length;i++) {
-                Detail detail = new Detail(names[i], reasons[i], userId);
-                detailDao.addDetail(detail);
-            }
-            TransactionUtil.commit();
-        } catch (DataBaseException e) {
             try {
+                TransactionUtil.beginTransaction();
+                for (int i = 0; i < names.length; i++) {
+                    Detail detail = new Detail(names[i], reasons[i], orderId);
+                    detailDao.addDetail(detail);
+                }
+                TransactionUtil.commit();
+                logger.info("details added");
+            } catch (DAOException e) {
+                logger.error(" can't add details "+e.getMessage());
                 TransactionUtil.rollback();
-            } catch (DataBaseException e1) {
-                e1.printStackTrace();
+            } finally {
+                    TransactionUtil.endTransaction();
             }
-        } catch (DAOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                TransactionUtil.endTransaction();
-            } catch (DataBaseException e) {
-                e.printStackTrace();
-            }
+        }catch (DataBaseException e){
+            throw new ServiceException(e);
         }
-
     }
 
-    public Set<Detail> getDetail (long orderId) throws ServiceException {
+    public Set<Detail> getDetail(long orderId) throws ServiceException {
         Set<Detail> detailSet;
         try {
             try {
                 TransactionUtil.beginTransaction();
-             detailSet = detailDao.getDetails(orderId);
+                detailSet = detailDao.getDetails(orderId);
                 TransactionUtil.commit();
+                logger.info("got details for order with id:"+ orderId);
             } catch (DAOException e) {
                 TransactionUtil.rollback();
+                logger.error( "couldn't got details for order with id:"+ orderId);
                 throw new ServiceException(e);
-            }finally {
+            } finally {
                 TransactionUtil.endTransaction();
             }
-        }catch (DataBaseException e){
+        } catch (DataBaseException e) {
             throw new ServiceException(e);
         }
         return detailSet;
