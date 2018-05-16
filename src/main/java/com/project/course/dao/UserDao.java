@@ -14,6 +14,8 @@ public interface UserDao {
     User getUserById(long id)throws DAOException, DataBaseException;
     void deleteUser(long id)throws DAOException, DataBaseException;
     long getUserId(String login)throws DAOException, DataBaseException;
+    boolean isSameEmail(String email)throws DAOException, DataBaseException;
+    boolean isSameLogin(String login)throws DAOException, DataBaseException;
     Set<User> getUsers(long from,long to)throws DAOException, DataBaseException;
     long getUserId(String login,String password)throws DAOException, DataBaseException;
 }

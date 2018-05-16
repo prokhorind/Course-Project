@@ -1,4 +1,3 @@
-
 <%--
   Created by IntelliJ IDEA.
   User: kleba
@@ -14,8 +13,7 @@
 <!DOCTYPE  html>
 <html lang="${language}">
 <head>
-
- <title><fmt:message key="login.title" bundle="${bundle}"/></title>
+    <title><fmt:message key="login.title" bundle="${bundle}"/></title>
     <style type="text/css">
         <%@include file="/css/startpage.css" %>
     </style>
@@ -30,28 +28,26 @@
     <div class="form">
         <div class="login-page">
                 <form class="login-form" action="${pageContext.request.contextPath}/start" method="post">
-                    <input type="text" placeholder="<fmt:message key="login.login" bundle="${bundle}"/>" name="username" id="username"/>
-                    <input type="password" placeholder="<fmt:message key="login.password" bundle="${bundle}"/>" name="password" id="password"/>
+                    <input type="text" required placeholder="<fmt:message key="login.login" bundle="${bundle}"/>" name="username" id="username"/>
+                    <input type="password" required placeholder="<fmt:message key="login.password" bundle="${bundle}"/>" name="password" id="password"/>
                     <input type="hidden" name="command" value="login"/>
                     <button><fmt:message key="login.button" bundle="${bundle}"/></button>
                     <p class="message"><fmt:message key="login.regmessage1" bundle="${bundle}"/> <a href="${pageContext.request.contextPath}/pages/reg.jsp"> <fmt:message key="login.regmessage2" bundle="${bundle}"/></a></p>
                 </form>
-            </div>
-
+        </div>
     </div>
     <div class="form">
         <div class="comments">
-            Comments<br>
+            <fmt:message key="login.comment" bundle="${bundle}"/><br>
             <c:forEach var="comment" items="${comments}">
                 <div class="message-orange">
-                    <p class="message-content">From: ${comment.username}</p>
+                    <p class="message-content"><fmt:message key="login.from" bundle="${bundle}"/> ${comment.username}</p>
                     <p class="message-content">${comment.comment}!</p>
                     <div class="message-timestamp-right">${comment.date}</div>
                 </div>
             </c:forEach>
             <c:forEach var="number" items="${numberOfComments}">
-            <a href="${pageContext.request.contextPath}/start?command=changecomments&pagenumber=${number}">${number}</a>
-
+                <a href="${pageContext.request.contextPath}/start?command=changecomments&pagenumber=${number}">${number}</a>
             </c:forEach>
         </div>
     </div>

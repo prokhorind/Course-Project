@@ -6,6 +6,7 @@ import com.project.course.exception.ServiceException;
 import com.project.course.service.LoginService;
 import com.project.course.service.ServiceFactory;
 import com.project.course.util.Roles;
+import com.project.course.util.Validation;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +24,8 @@ public class AuthenticationCommand implements Command {
         HttpSession session = request.getSession();
         ServiceFactory serviceFactory = ServiceFactory.getInstatice();
         LoginService loginService = serviceFactory.getLoginService();
-        String username= request.getParameter("username");
-        String password= request.getParameter("password");
+        String username= Validation.injectionProtection(request.getParameter("username"));
+        String password= Validation.injectionProtection(request.getParameter("password"));
         try {
             role= loginService.login(username,password);
             if(role==null||role.isEmpty()){

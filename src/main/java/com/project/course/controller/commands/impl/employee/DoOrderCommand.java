@@ -4,6 +4,7 @@ import com.project.course.controller.commands.Command;
 import com.project.course.exception.ServiceException;
 import com.project.course.service.OrderService;
 import com.project.course.service.ServiceFactory;
+import com.project.course.util.Validation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,18 +19,18 @@ public class DoOrderCommand implements Command {
    private OrderService orderService = serviceFactory.getOrderService();
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        String[] ids = request.getParameterValues("select");
         try {
-            orderService.doOrders(Arrays.asList(ids));
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
-        try {
-            request.getSession().setAttribute("name",request.getSession().getAttribute("name"));
-            request.getSession().setAttribute("role",request.getSession().getAttribute("role"));
-            response.sendRedirect(request.getContextPath()+"?command=getdata");
-        } catch (IOException e) {
-            e.printStackTrace();
+            String[] ids = Validation.injectionProtection(request.getParameterValues("select"));
+            try {
+                request.getSession().setAttribute("name", request.getSession().getAttribute("name"));
+                request.getSession().setAttribute("role", request.getSession().getAttribute("role"));
+                orderService.doOrders(Arrays.asList(ids));
+                response.sendRedirect(request.getContextPath() + "?command=getdata");
+            } catch (ServiceException e) {
+                response.sendRedirect(request.getContextPath() + "?command=getdata");
+            }
+        }catch (IOException e){
+
         }
     }
 }

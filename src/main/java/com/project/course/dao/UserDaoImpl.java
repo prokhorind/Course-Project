@@ -81,7 +81,7 @@ public class UserDaoImpl implements UserDao {
     public long getUserId(String login) throws DAOException, DataBaseException {
         ConnectionWrapper con = TransactionUtil.getConnection();
         String sql ="Select userId from user where login=?";
-        long userId=0;
+        long userId=-1;
         try {
             PreparedStatement preparedStatement= con.createPreparedStatement(sql);
             preparedStatement.setString(1,login);
@@ -90,9 +90,55 @@ public class UserDaoImpl implements UserDao {
                 userId=rs.getLong(1);
             }
         } catch (SQLException e) {
+            userId = -1;
             throw  new DAOException(e);
         }
         return userId;
+    }
+
+    @Override
+    public boolean isSameEmail(String email) throws DAOException, DataBaseException {
+        ConnectionWrapper con = TransactionUtil.getConnection();
+        String sql ="SELECT EXISTS(SELECT userId FROM user WHERE email =? )";
+        long userId=-1;
+        try {
+            PreparedStatement preparedStatement= con.createPreparedStatement(sql);
+            preparedStatement.setString(1,email);
+            ResultSet rs=preparedStatement.executeQuery();
+            if(rs.next()) {
+                userId = rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+        if(userId==0|| userId==-1){
+            return  false;
+        }else{
+            return true;
+        }
+
+    }
+
+    @Override
+    public boolean isSameLogin(String login) throws DAOException, DataBaseException {
+        ConnectionWrapper con = TransactionUtil.getConnection();
+        String sql ="SELECT EXISTS(SELECT userId FROM user WHERE login =? )";
+        long userId=-1;
+        try {
+            PreparedStatement preparedStatement= con.createPreparedStatement(sql);
+            preparedStatement.setString(1,login);
+            ResultSet rs=preparedStatement.executeQuery();
+            if(rs.next()) {
+                userId = rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+        if(userId==0|| userId==-1){
+            return  false;
+        }else{
+            return true;
+        }
     }
 
     @Override

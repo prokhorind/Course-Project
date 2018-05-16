@@ -4,6 +4,7 @@ import com.project.course.controller.commands.Command;
 import com.project.course.exception.ServiceException;
 import com.project.course.service.CommentService;
 import com.project.course.service.ServiceFactory;
+import com.project.course.util.Validation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,8 +18,8 @@ public class AddCommentCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         ServiceFactory sf =ServiceFactory.getInstatice();
         CommentService cs = sf.getCommentService();
-        String name = (String) request.getSession().getAttribute("name");
-        String comment = request.getParameter("comment");
+        String name = Validation.injectionProtection((String) request.getSession().getAttribute("name"));
+        String comment = Validation.injectionProtection( request.getParameter("comment"));
         try {
             cs.addComment(name,comment);
         } catch (ServiceException e) {

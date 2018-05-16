@@ -1,5 +1,7 @@
 package com.project.course.util;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 /**
  * Created by kleba on 09.05.2018.
  */
@@ -13,6 +15,11 @@ public class Validation {
 
     }
 
+    public static String injectionProtection(String text){
+       text = StringEscapeUtils.escapeHtml(text);
+       text = StringEscapeUtils.escapeJavaScript(text);
+       return text;
+    }
    public static boolean  isPasswordValid(String password) {
         final String regex = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(regex);
@@ -29,4 +36,11 @@ public class Validation {
         return m.matches();
     }
 
+    public static String[] injectionProtection(String[] array){
+        String [] newArray = new String[array.length];
+        for(int i =0; i<array.length;i++) {
+            newArray[i]= injectionProtection(array[i]);
+        }
+        return newArray;
+    }
 }

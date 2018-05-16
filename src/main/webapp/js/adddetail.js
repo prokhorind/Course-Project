@@ -8,7 +8,6 @@ function addFields(){
     // Container <div> where dynamic content will be placed
     var container = document.getElementById("Order");
     // Clear previous contents of the container
-
     while (container.hasChildNodes()) {
         container.removeChild(container.lastChild);
     }
@@ -37,8 +36,8 @@ function addFields(){
         container.appendChild(document.createElement("br"));
     }
     j+=1;
-    var button = document.createElement("input");
-    button.type = "submit";
+    var button = document.createElement("button");
     button.name = "submit";
+    button.textContent = "submit"
     container.appendChild(button);
 }

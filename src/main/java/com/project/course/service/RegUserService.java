@@ -19,7 +19,7 @@ public class RegUserService {
     private final DaoFactory factory = DaoFactory.getInstance();
     private Logger logger = LoggerFactory.getLogger(RegUserService.class);
 
-    public void regUser(User user) throws ServiceException {
+    public void regUser(User user) throws ServiceException, MailException {
         try {
             UserDao userDao = factory.getUserDao();
             RoleDao roleDao = factory.getRoleDao();
@@ -27,14 +27,20 @@ public class RegUserService {
             try {
                 TransactionUtil.beginTransaction();
                 user.setPass(DigestUtils.md5Hex(user.getPass()).toUpperCase());
-                userDao.insertUser(user);
-                long userId=userDao.getUserId(user.getLogin());
-                long roleId=roleDao.getRoleId(Roles.MEMBER.toString());
-                userRoleDao.addUserRole(roleId,userId);
-                TransactionUtil.commit();
-                logger.info("user was registered");
-                sendEmail(user);
-                logger.info("email to"+user.getEmail()+" was sent");
+                if(!userDao.isSameEmail(user.getEmail())&&!userDao.isSameLogin(user.getLogin())) {
+                    userDao.insertUser(user);
+                    long userId=userDao.getUserId(user.getLogin());
+                    long roleId=roleDao.getRoleId(Roles.MEMBER.toString());
+                    userRoleDao.addUserRole(roleId,userId);
+                    TransactionUtil.commit();
+                    logger.info("user was registered");
+                    sendEmail(user);
+                    logger.info("email to"+user.getEmail()+" was sent");
+                }
+                else{
+                    throw new DAOException(new Throwable("same login"));
+                }
+
             } catch (DAOException e) {
                 logger.error(e.getLocalizedMessage());
                TransactionUtil.rollback();
@@ -46,12 +52,8 @@ public class RegUserService {
             throw new ServiceException(e);
         }
     }
-    public void sendEmail(User user) throws ServiceException {
+    public void sendEmail(User user) throws  MailException {
         MailDao mailDao = factory.getMailDao();
-        try {
             mailDao.send(user);
-        } catch (MailException e) {
-            throw  new ServiceException(e);
-        }
     }
 }

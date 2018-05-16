@@ -2,6 +2,7 @@ package com.project.course.controller.commands.impl.common;
 
 import com.project.course.controller.commands.Command;
 import com.project.course.util.Language;
+import com.project.course.util.Validation;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +20,8 @@ public class ChangeLanguageCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         ResourceBundle rb;
-        String getLocale = request.getParameter("lang");
-        String page = request.getParameter("page");
+        String getLocale = Validation.injectionProtection(request.getParameter("lang"));
+        String page = Validation.injectionProtection(request.getParameter("page"));
 
         if (getLocale == null || getLocale.isEmpty()) {
 

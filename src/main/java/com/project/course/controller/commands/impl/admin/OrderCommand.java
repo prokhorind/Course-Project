@@ -5,6 +5,7 @@ import com.project.course.dto.IdWithPOR;
 import com.project.course.exception.ServiceException;
 import com.project.course.service.OrderService;
 import com.project.course.service.ServiceFactory;
+import com.project.course.util.Validation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,9 +21,9 @@ public class OrderCommand implements Command {
   private  OrderService orderService = serviceFactory.getOrderService();
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        String decision = request.getParameter("decision");
-        String[] ids = request.getParameterValues("select");
-        String [] pr = request.getParameterValues("pr");
+        String decision = Validation.injectionProtection(request.getParameter("decision"));
+        String[] ids =  Validation.injectionProtection(request.getParameterValues("select"));
+        String [] pr =  Validation.injectionProtection (request.getParameterValues("pr"));
         List<String> listPR = new ArrayList(Arrays.asList(pr));
         listPR.removeAll(Arrays.asList("", null));
         List<String> id = new ArrayList(Arrays.asList(ids));

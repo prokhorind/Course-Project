@@ -90,5 +90,4 @@ public enum CommandEnum {
     public Command getCommand() {
         return command;
     }
-
 }

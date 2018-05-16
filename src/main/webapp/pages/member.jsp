@@ -24,13 +24,14 @@
 <a href="${pageContext.request.contextPath}/start?lang=en&command=changelang&page=member.jsp"><img src="${pageContext.request.contextPath}/pages/picture/united-kingdom_l.png" width="25" height="15"></a>
 <a href="${pageContext.request.contextPath}/start?lang=ru&command=changelang&page=member.jsp"><img src="${pageContext.request.contextPath}/pages/picture/russia_l.png" width="25" height="15"></a>
     <div class="form">
-            <button  onclick="addFields()"> <fmt:message key="member.button2" bundle="${bundle}"/></button>
+
+            <button  onclick="addFields()"><fmt:message key="member.button2" bundle="${bundle}"/></button>
             <form action="/start">
                 <div id="Order">
                     <fmt:message key="member.detail1" bundle="${bundle}"/>
                     <input type="hidden" name="command" value="addorder"/>
-                    <input type="text" placeholder="name" name="name" id="name">
-                    <input type="text" placeholder="reason" name="reason" id="reason">
+                    <input type="text" required name="name" placeholder="<fmt:message key="member.name" bundle="${bundle}"/>" id="name">
+                    <input type="text" required name="reason" placeholder="<fmt:message key="member.reason" bundle="${bundle}"/>" id="reason">
                     <button><fmt:message key="member.button1" bundle="${bundle}"/></button>
                 </div>
             </form>
@@ -64,7 +65,7 @@
             <form action="/start">
                 <fmt:message key="member.comment" bundle="${bundle}"/>
                 <input type="hidden" name="command" value="addcomment" placeholder="comment">
-                <input type="text" name="comment">
+                <input type="text" required name="comment">
                 <button><fmt:message key="member.button1" bundle="${bundle}"/></button>
             </form>
         </div>

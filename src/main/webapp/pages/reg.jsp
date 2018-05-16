@@ -22,9 +22,9 @@
 <a href="${pageContext.request.contextPath}/start?lang=ru&command=changelang&page=reg.jsp"><img src="${pageContext.request.contextPath}/pages/picture/russia_l.png" width="25" height="15"></a>
 <div class="form">
     <form class="register-form" action="${pageContext.request.contextPath}/start" method="post">
-        <input type="text" placeholder="<fmt:message key="reg.login" bundle="${bundle}"/>" name="login" id="login"/>
-        <input type="password" placeholder="<fmt:message key="reg.pass" bundle="${bundle}"/>" name="password" id="password"/>
-        <input type="text" placeholder="<fmt:message key="reg.email" bundle="${bundle}"/>" name="email" id="email"/>
+        <input type="text" required placeholder="<fmt:message key="reg.login" bundle="${bundle}"/>" name="login" id="login"/>
+        <input type="password" required placeholder="<fmt:message key="reg.pass" bundle="${bundle}"/>" name="password" id="password"/>
+        <input type="text" required placeholder="<fmt:message key="reg.email" bundle="${bundle}"/>" name="email" id="email"/>
         <input type="hidden" name="command" value="reg"/>
         <button><fmt:message key="reg.button" bundle="${bundle}"/></button>
         <p class="message"><fmt:message key="reg.message1" bundle="${bundle}"/>" <a href="${pageContext.request.contextPath}/start"><fmt:message key="reg.message2" bundle="${bundle}"/></a></p>

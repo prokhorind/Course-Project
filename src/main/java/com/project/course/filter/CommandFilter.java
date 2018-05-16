@@ -31,7 +31,11 @@ public class CommandFilter  implements Filter{
                 command.equalsIgnoreCase(CommandEnum.GETDATA.toString())||
                 command.equalsIgnoreCase(CommandEnum.ADDCOMMENT.toString())||
                 command.equalsIgnoreCase(CommandEnum.ADDORDER.toString())||
-                command.equalsIgnoreCase(CommandEnum.LOGOUT.toString()))){
+                command.equalsIgnoreCase(CommandEnum.LOGOUT.toString())||
+                command.equalsIgnoreCase(CommandEnum.ADDORDER.toString())||
+                command.equalsIgnoreCase(CommandEnum.DOORDER.toString())||
+                command.equalsIgnoreCase(CommandEnum.ORDERINFO.toString())||
+                command.equalsIgnoreCase(CommandEnum.CHANGEORDER.toString()))){
             ((HttpServletResponse)servletResponse).sendRedirect(request.getContextPath()+"/start");
         }else{
             filterChain.doFilter(servletRequest,servletResponse);

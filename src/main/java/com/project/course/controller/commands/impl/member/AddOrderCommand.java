@@ -5,6 +5,7 @@ import com.project.course.exception.ServiceException;
 import com.project.course.service.DetailService;
 import com.project.course.service.OrderService;
 import com.project.course.service.ServiceFactory;
+import com.project.course.util.Validation;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,9 +21,9 @@ public class AddOrderCommand implements Command {
         ServiceFactory serviceFactory = ServiceFactory.getInstatice();
         OrderService os  = serviceFactory.getOrderService();
         DetailService ds = serviceFactory.getDetailService();
-        String name = (String) request.getSession().getAttribute("name");
-        String[] names = request.getParameterValues("name");
-        String[] reasons = request.getParameterValues("reason");
+        String name = Validation.injectionProtection((String) request.getSession().getAttribute("name"));
+        String[] names =  Validation.injectionProtection(request.getParameterValues("name"));
+        String[] reasons =  Validation.injectionProtection(request.getParameterValues("reason"));
         try {
             long orderId= os.addOrder(name,names,reasons);
             ds.addDetail(names,reasons,orderId);
