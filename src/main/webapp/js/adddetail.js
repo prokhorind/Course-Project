@@ -1,6 +1,7 @@
 /**
  * Created by kleba on 10.05.2018.
  */
+
 var j =2;
 function addFields(){
 

@@ -12,7 +12,7 @@
 <!DOCTYPE  html>
 <html lang="${language}">
 <head>
-    <title>Registration form</title>
+    <title><fmt:message key="reg.title" bundle="${bundle}"/></title>
     <style type="text/css">
         <%@include file="/css/startpage.css" %>
         </style>
@@ -26,8 +26,8 @@
         <input type="password" placeholder="<fmt:message key="reg.pass" bundle="${bundle}"/>" name="password" id="password"/>
         <input type="text" placeholder="<fmt:message key="reg.email" bundle="${bundle}"/>" name="email" id="email"/>
         <input type="hidden" name="command" value="reg"/>
-        <button>create</button>
-        <p class="message">Already registered? <a href="${pageContext.request.contextPath}/start">Sign In</a></p>
+        <button><fmt:message key="reg.button" bundle="${bundle}"/></button>
+        <p class="message"><fmt:message key="reg.message1" bundle="${bundle}"/>" <a href="${pageContext.request.contextPath}/start"><fmt:message key="reg.message2" bundle="${bundle}"/></a></p>
     </form>
     </div>
 </body>
