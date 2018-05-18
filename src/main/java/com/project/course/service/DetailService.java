@@ -2,6 +2,7 @@ package com.project.course.service;
 
 import com.project.course.dao.DaoFactory;
 import com.project.course.dao.DetailDao;
+import com.project.course.dao.OrderDao;
 import com.project.course.entity.Detail;
 import com.project.course.exception.DAOException;
 import com.project.course.exception.DataBaseException;
@@ -18,28 +19,38 @@ import java.util.Set;
 public class DetailService {
     private final DaoFactory factory = DaoFactory.getInstance();
     private DetailDao detailDao = factory.getDetailDao();
+    private OrderDao orderDao = factory.getOrderDao();
     private Logger logger = LoggerFactory.getLogger(DetailService.class);
 
+
     public void addDetail(String[] names, String[] reasons, long orderId) throws ServiceException {
-        try {
+
             try {
-                TransactionUtil.beginTransaction();
-                for (int i = 0; i < names.length; i++) {
-                    Detail detail = new Detail(names[i], reasons[i], orderId);
-                    detailDao.addDetail(detail);
-                }
-                TransactionUtil.commit();
-                logger.info("details added");
-            } catch (DAOException e) {
-                logger.error(" can't add details "+e.getMessage());
-                TransactionUtil.rollback();
-            } finally {
+                try {
+                    if (names.length == 0 || reasons.length == 0) {
+                        throw new DataBaseException("empty array");
+                    } else if (!orderDao.isOrderPresented(orderId)) {
+                        throw new DataBaseException("order isn't presented");
+                    } else {
+                        TransactionUtil.beginTransaction();
+                        for (int i = 0; i < names.length; i++) {
+                            Detail detail = new Detail(names[i], reasons[i], orderId);
+                            detailDao.addDetail(detail);
+                        }
+                        TransactionUtil.commit();
+                        logger.info("details added");
+                    }
+                }finally {
                     TransactionUtil.endTransaction();
+                }
+            } catch (DataBaseException e) {
+                logger.error(" can't add details " + e.getMessage());
+                throw new ServiceException(e);
+            } catch (DAOException e) {
+                logger.error(" can't add details " + e.getMessage());
+                throw new ServiceException(e);
             }
-        }catch (DataBaseException e){
-            throw new ServiceException(e);
         }
-    }
 
     public Set<Detail> getDetail(long orderId) throws ServiceException {
         Set<Detail> detailSet;
@@ -60,5 +71,9 @@ public class DetailService {
             throw new ServiceException(e);
         }
         return detailSet;
+    }
+
+    public void setDetailDao(DetailDao detailDao) {
+        this.detailDao = detailDao;
     }
 }

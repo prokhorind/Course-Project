@@ -22,4 +22,5 @@ public interface OrderDao {
     long countOrders(long userId)throws DataBaseException, DAOException;
     long countOrders(OrderStatus orderStatus) throws DataBaseException, DAOException;
     long getLastOrder()throws DataBaseException, DAOException;
+    boolean isOrderPresented(long orderId)throws DataBaseException, DAOException;
 }

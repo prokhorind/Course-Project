@@ -149,7 +149,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public long getUserIdByOrderId(long orderId) throws DataBaseException, DAOException {
-        long id;
+        long id = 0;
         ConnectionWrapper con = TransactionUtil.getConnection();
         String sql ="SELECT userId FROM Orders where orderId=?";
         PreparedStatement preparedStatement= null;
@@ -209,6 +209,27 @@ public class OrderDaoImpl implements OrderDao {
         }
 
         return number;
+    }
+    @Override
+    public boolean isOrderPresented(long orderId) throws DataBaseException, DAOException {
+        ConnectionWrapper con = TransactionUtil.getConnection();
+        int answer = -1;
+        String sql = "SELECT EXISTS(SELECT orderId FROM orders WHERE orderId = ?)";
+        try {
+            PreparedStatement preparedStatement = con.createPreparedStatement(sql);
+            preparedStatement.setLong(1, orderId);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                answer = rs.getInt(1);
+            }
+            if(answer==1){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
     }
 
     @Override

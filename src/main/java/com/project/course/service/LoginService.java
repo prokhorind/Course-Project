@@ -25,11 +25,11 @@ public class LoginService {
 
     private final DaoFactory factory = DaoFactory.getInstance();
     Logger logger = LoggerFactory.getLogger(LoginService.class);
+    private UserDao userDao = factory.getUserDao();
+    private UserRoleDao userRoleDao = factory.getUserRoleDao();
+    private RoleDao roleDao = factory.getRoleDao();
 
     public String login(String login,String password) throws ServiceException {
-        UserDao userDao = factory.getUserDao();
-        UserRoleDao userRoleDao = factory.getUserRoleDao();
-        RoleDao roleDao = factory.getRoleDao();
         Role role = null;
         try {
             TransactionUtil.beginTransaction();
@@ -56,7 +56,6 @@ public class LoginService {
         }
         return role.getName();
     }
-
 
     public String chooseMainPage(String role){
         if (role==null || role.isEmpty()){

@@ -305,4 +305,8 @@ public class OrderService {
         }
         return  orderId;
     }
+
+    public void setOrderDao(OrderDao orderDao) {
+        this.orderDao = orderDao;
+    }
 }

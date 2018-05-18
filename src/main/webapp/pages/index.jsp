@@ -42,7 +42,7 @@
             <c:forEach var="comment" items="${comments}">
                 <div class="message-orange">
                     <p class="message-content"><fmt:message key="login.from" bundle="${bundle}"/> ${comment.username}</p>
-                    <p class="message-content">${comment.comment}!</p>
+                    <p class="message-content"><c:out value="${comment.comment}"/></p>
                     <div class="message-timestamp-right">${comment.date}</div>
                 </div>
             </c:forEach>

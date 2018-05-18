@@ -18,16 +18,20 @@ import javax.transaction.Transaction;
 public class RegUserService {
     private final DaoFactory factory = DaoFactory.getInstance();
     private Logger logger = LoggerFactory.getLogger(RegUserService.class);
-
+    private UserDao userDao;
+    private RoleDao roleDao;
+    private UserRoleDao userRoleDao;
+    private  MailDao mailDao;
     public void regUser(User user) throws ServiceException, MailException {
         try {
-            UserDao userDao = factory.getUserDao();
-            RoleDao roleDao = factory.getRoleDao();
-            UserRoleDao userRoleDao= factory.getUserRoleDao();
+            userDao = factory.getUserDao();
+            roleDao = factory.getRoleDao();
+            userRoleDao= factory.getUserRoleDao();
             try {
                 TransactionUtil.beginTransaction();
                 user.setPass(DigestUtils.md5Hex(user.getPass()).toUpperCase());
                 if(!userDao.isSameEmail(user.getEmail())&&!userDao.isSameLogin(user.getLogin())) {
+                    System.out.println(user.getLogin());
                     userDao.insertUser(user);
                     long userId=userDao.getUserId(user.getLogin());
                     long roleId=roleDao.getRoleId(Roles.MEMBER.toString());
@@ -44,6 +48,7 @@ public class RegUserService {
             } catch (DAOException e) {
                 logger.error(e.getLocalizedMessage());
                TransactionUtil.rollback();
+                throw new ServiceException(e);
             } finally {
                TransactionUtil.endTransaction();
             }
@@ -53,7 +58,7 @@ public class RegUserService {
         }
     }
     public void sendEmail(User user) throws  MailException {
-        MailDao mailDao = factory.getMailDao();
-            mailDao.send(user);
+        mailDao = factory.getMailDao();
+        mailDao.send(user);
     }
 }

@@ -11,8 +11,6 @@ import com.project.course.transaction.TransactionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,10 +21,13 @@ import java.util.Set;
 public class CommentService {
     private final DaoFactory factory = DaoFactory.getInstance();
     private Logger logger = LoggerFactory.getLogger(CommentService.class);
+    private CommentDao commentDao = factory.getCommentDao();
+    private UserDao userDao ;
+
     public void addComment(String login,String comment) throws ServiceException {
         try {
-            CommentDao commentDao = factory.getCommentDao();
-            UserDao userDao = factory.getUserDao();
+             commentDao = factory.getCommentDao();
+             userDao = factory.getUserDao();
             try {
                 TransactionUtil.beginTransaction();
                 long userId = userDao.getUserId(login);
@@ -48,7 +49,7 @@ public class CommentService {
 
         Set<Long> longSet = new HashSet<>();
         try {
-            CommentDao commentDao = factory.getCommentDao();
+             commentDao = factory.getCommentDao();
             long comments = 0;
             try {
                 TransactionUtil.beginTransaction();
@@ -73,7 +74,6 @@ public class CommentService {
     }
 
     public List<com.project.course.dto.Comment> getComments(long limit,long offset) throws ServiceException {
-        CommentDao commentDao =factory.getCommentDao();
         List<com.project.course.dto.Comment> comments;
         try {
             TransactionUtil.beginTransaction();
@@ -94,5 +94,9 @@ public class CommentService {
             }
         }
         return  comments;
+    }
+
+    public void setCommentDao(CommentDao commentDao) {
+        this.commentDao = commentDao;
     }
 }

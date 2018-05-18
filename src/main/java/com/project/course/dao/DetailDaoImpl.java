@@ -26,9 +26,7 @@ public class DetailDaoImpl implements DetailDao {
             ps.setString(2,detail.getReason());
             ps.setLong(3,detail.getOrderId());
             ps.execute();
-
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DAOException(e);
         } finally {
             try {
@@ -91,5 +89,7 @@ public class DetailDaoImpl implements DetailDao {
         }
         return detailSet;
     }
+
+
 }
 

@@ -1,6 +1,7 @@
 package com.project.course.util;
 
-import org.apache.commons.lang.StringEscapeUtils;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Created by kleba on 09.05.2018.
@@ -15,10 +16,9 @@ public class Validation {
 
     }
 
-    public static String injectionProtection(String text){
-       text = StringEscapeUtils.escapeHtml(text);
-       text = StringEscapeUtils.escapeJavaScript(text);
-       return text;
+    public static String injectionProtection(String text) {
+        text = StringEscapeUtils.escapeHtml4(text);
+        return text;
     }
    public static boolean  isPasswordValid(String password) {
         final String regex = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}";
