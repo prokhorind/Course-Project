@@ -1,11 +1,14 @@
 package com.project.course.controller.commands.impl.admin;
 
 import com.project.course.controller.commands.Command;
+import com.project.course.controller.commands.impl.member.AddOrderCommand;
 import com.project.course.dto.IdWithPOR;
 import com.project.course.exception.ServiceException;
 import com.project.course.service.OrderService;
 import com.project.course.service.ServiceFactory;
 import com.project.course.util.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,8 +20,9 @@ import java.util.*;
  * Created by kleba on 14.05.2018.
  */
 public class OrderCommand implements Command {
-  private  ServiceFactory serviceFactory = ServiceFactory.getInstatice();
-  private  OrderService orderService = serviceFactory.getOrderService();
+    private  ServiceFactory serviceFactory = ServiceFactory.getInstatice();
+    private  OrderService orderService = serviceFactory.getOrderService();
+    private Logger logger = LoggerFactory.getLogger(OrderCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String decision = Validation.injectionProtection(request.getParameter("decision"));
@@ -35,26 +39,26 @@ public class OrderCommand implements Command {
             valueList.add(idWithPoR);
         }
         try {
-       switch (decision){
-           case "approve":
-               orderService.approveOrder(valueList);
-               break;
-           case "deny":
-               orderService.denyOrder(valueList);
-               break;
-           case "delete":
-               orderService.deleteOrders(id);
-               break;
-       }
+            switch (decision){
+               case "approve":
+                   orderService.approveOrder(valueList);
+                   break;
+               case "deny":
+                   orderService.denyOrder(valueList);
+                   break;
+               case "delete":
+                   orderService.deleteOrders(id);
+                   break;
+            }
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.error("can't do order command"+e.getMessage());
         }
         try {
             request.getSession().setAttribute("name",request.getSession().getAttribute("name"));
             request.getSession().setAttribute("role",request.getSession().getAttribute("role"));
             response.sendRedirect(request.getContextPath()+"?command=getdata");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("wrong redirct path");
         }
     }
 }

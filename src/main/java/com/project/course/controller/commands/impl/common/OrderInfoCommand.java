@@ -6,6 +6,8 @@ import com.project.course.entity.Detail;
 import com.project.course.entity.User;
 import com.project.course.exception.ServiceException;
 import com.project.course.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +24,7 @@ public class OrderInfoCommand implements Command {
    private OrderService os = serviceFactory.getOrderService();
    private DetailService ds = serviceFactory.getDetailService();
    private UserService us = serviceFactory.getUserService();
-
+   private Logger logger = LoggerFactory.getLogger(OrderInfoCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
@@ -38,13 +40,13 @@ public class OrderInfoCommand implements Command {
             information = new OrderInformation(user.getLogin(),user.getEmail(),detailSet);
 
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.error("failed got order info"+e.getMessage());
         }
         session.setAttribute("information",information);
         try {
             response.sendRedirect(request.getContextPath()+"/pages/orderInformation.jsp");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("wrong redirect page");
         }
     }
 }

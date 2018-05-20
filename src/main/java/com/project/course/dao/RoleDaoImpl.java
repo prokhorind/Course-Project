@@ -34,7 +34,6 @@ public class RoleDaoImpl implements RoleDao {
                 throw new DataBaseException(e);
             }
         }
-
     }
 
     @Override

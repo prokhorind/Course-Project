@@ -18,4 +18,5 @@ public interface UserDao {
     boolean isSameLogin(String login)throws DAOException, DataBaseException;
     Set<User> getUsers(long from,long to)throws DAOException, DataBaseException;
     long getUserId(String login,String password)throws DAOException, DataBaseException;
+    com.project.course.dto.User getUser(String login, String password)throws  DAOException, DataBaseException;
 }

@@ -26,7 +26,6 @@ public class CommandFilter  implements Filter{
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String command  = request.getParameter("command");
         String login = (String) request.getSession().getAttribute("name");
-
         if(Objects.nonNull(command)&&Objects.isNull(login)&&(
                 command.equalsIgnoreCase(CommandEnum.GETDATA.toString())||
                 command.equalsIgnoreCase(CommandEnum.ADDCOMMENT.toString())||

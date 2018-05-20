@@ -6,6 +6,8 @@ import com.project.course.exception.ServiceException;
 import com.project.course.service.CommentService;
 import com.project.course.service.ServiceFactory;
 import com.project.course.util.Language;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +24,7 @@ import java.util.Set;
 public class ChangeCommentsCommand implements Command {
     private  ServiceFactory sf =ServiceFactory.getInstatice();
     private  CommentService cs = sf.getCommentService();
-
+    Logger logger = LoggerFactory.getLogger(ChangeCommentsCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         int numberOfContent=5;
@@ -41,9 +43,9 @@ public class ChangeCommentsCommand implements Command {
         session.setAttribute("comments",commentList);
         response.sendRedirect(request.getContextPath() + "/pages/index.jsp");
         }  catch (IOException e) {
-            e.printStackTrace();
+            logger.error("wrong path to jsp file");
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.error("Can't change comments,"+e.getMessage());
         }
     }
 }

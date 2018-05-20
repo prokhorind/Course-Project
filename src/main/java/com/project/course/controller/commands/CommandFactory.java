@@ -11,17 +11,11 @@ public class CommandFactory {
     public Command getCommand(HttpServletRequest request){
         CommandEnum commandEnum=CommandEnum.INVALID;
         String action = request.getParameter("command");
-
         if (action==null||action.isEmpty()) {
            return  commandEnum.DEFAULT.getCommand();
         }
-        try {
             commandEnum = CommandEnum.valueOf(action.toUpperCase());
-        }catch (IllegalArgumentException e){
-            e.printStackTrace();
-        }finally {
             return commandEnum.getCommand();
-        }
     }
     public static CommandFactory getInstatice(){
         return commandFactory;

@@ -9,6 +9,8 @@ import com.project.course.service.OrderService;
 import com.project.course.service.ServiceFactory;
 import com.project.course.util.OrderStatus;
 import com.project.course.util.Roles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +30,7 @@ public class GetDataCommand implements Command {
         ServiceFactory serviceFactory = ServiceFactory.getInstatice();
         LoginService loginService = serviceFactory.getLoginService();
         OrderService orderService = serviceFactory.getOrderService();
+        Logger logger = LoggerFactory.getLogger(GetDataCommand.class);
         String login = (String) request.getSession().getAttribute("name");
         String role = (String) request.getSession().getAttribute("role");
         try {
@@ -45,9 +48,9 @@ public class GetDataCommand implements Command {
             request.getSession().setAttribute("orders",orderSet);
             response.sendRedirect(request.getContextPath()+loginService.chooseMainPage(role));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("wrong response path");
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.error("can't get data:"+e.getMessage());
         }
     }
 }

@@ -7,6 +7,8 @@ import com.project.course.exception.ServiceException;
 import com.project.course.service.CommentService;
 import com.project.course.service.ServiceFactory;
 import com.project.course.util.Language;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +23,9 @@ import java.util.Set;
  * Created by kleba on 07.05.2018.
  */
 public class DefaultPageCommand implements Command {
+
+    private Logger logger = LoggerFactory.getLogger(DefaultPageCommand.class);
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         int limit = 5;
@@ -38,9 +43,9 @@ public class DefaultPageCommand implements Command {
                 response.sendRedirect(request.getContextPath() + "/pages/index.jsp");
 
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.error("can't get comments:"+e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("wrong response path");
         }
     }
 }

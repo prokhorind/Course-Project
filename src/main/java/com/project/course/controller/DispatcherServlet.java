@@ -17,7 +17,7 @@ import java.io.IOException;
  * Created by kleba on 16.04.2018.
  */
 @WebServlet("/start")
-public class StartServlet extends HttpServlet {
+public class DispatcherServlet extends HttpServlet {
 
     public void doGet (HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         processRequest(req,res);

@@ -186,4 +186,29 @@ public class UserDaoImpl implements UserDao {
         }
         return userId;
     }
+
+    @Override
+    public com.project.course.dto.User getUser(String login, String password) throws DAOException, DataBaseException {
+        com.project.course.dto.User user = null;
+        ConnectionWrapper con = TransactionUtil.getConnection();
+        String sql ="Select user.userId,user.email,user.login,role.name \n" +
+                "from userrole \n" +
+                "inner join  user on user.userId = userrole.userId \n" +
+                "inner join  role on role.roleId = userrole.roleId \n" +
+                "where user.login = ? and user.password =?";
+        long userId=0;
+        try {
+            PreparedStatement preparedStatement= con.createPreparedStatement(sql);
+            preparedStatement.setString(1,login);
+            preparedStatement.setString(2,password);
+            ResultSet rs=preparedStatement.executeQuery();
+            if(rs.next()){
+                user = new com.project.course.dto.User(rs.getString(3),rs.getString(2),rs.getString(4),rs.getLong(1));
+            }
+        } catch (SQLException e) {
+            user = null;
+            throw  new DAOException(e);
+        }
+        return user;
+    }
 }

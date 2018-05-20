@@ -4,6 +4,7 @@ import com.project.course.dao.DaoFactory;
 import com.project.course.dao.RoleDao;
 import com.project.course.dao.UserDao;
 import com.project.course.dao.UserRoleDao;
+import com.project.course.dto.User;
 import com.project.course.entity.Order;
 import com.project.course.entity.Role;
 import com.project.course.exception.DAOException;
@@ -29,32 +30,25 @@ public class LoginService {
     private UserRoleDao userRoleDao = factory.getUserRoleDao();
     private RoleDao roleDao = factory.getRoleDao();
 
-    public String login(String login,String password) throws ServiceException {
-        Role role = null;
+    public User login(String login, String password) throws ServiceException {
+        User user = null;
         try {
-            TransactionUtil.beginTransaction();
-            long userId = userDao.getUserId(login, DigestUtils.md5Hex(password).toUpperCase());
-            long roleId = userRoleDao.getRoleId(userId);
-            role=  roleDao.getRoleById(roleId);
-            TransactionUtil.commit();
-        } catch (DAOException e) {
-            logger.error("Transaction failed"+e);
             try {
-                TransactionUtil.rollback();
-            } catch (DataBaseException e1) {
-                e1.printStackTrace();
-            }
-        } catch (DataBaseException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                TransactionUtil.endTransaction();
+                TransactionUtil.beginTransaction();
+                user = userDao.getUser(login, DigestUtils.md5Hex(password).toUpperCase());
+                TransactionUtil.commit();
                 logger.info("Transaction completed");
-            } catch (DataBaseException e) {
-                e.printStackTrace();
+            } catch (DAOException e) {
+                logger.error("Transaction failed" + e);
+                    TransactionUtil.rollback();
+            } finally {
+                TransactionUtil.endTransaction();
             }
+
+        }catch (DataBaseException e){
+            logger.error("Auth failed"+e.getMessage());
         }
-        return role.getName();
+        return user;
     }
 
     public String chooseMainPage(String role){

@@ -1,19 +1,9 @@
 package com.project.course.service;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-import com.project.course.transaction.ConnectionWrapper;
-import com.project.course.transaction.TransactionUtil;
 import com.project.course.util.ConnectionPool;
-import com.sun.xml.internal.ws.developer.UsesJAXBContext;
-import org.apache.commons.dbcp.BasicDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
-
 import static org.junit.Assert.*;
 
 /**
@@ -46,7 +36,7 @@ public class LoginServiceTest {
         String login = "klebanoff";
         String password = "15fghtkm";
         String role = "member";
-        assertEquals(role,ls.login(login,password));
+        assertEquals(role,ls.login(login,password).getRole());
     }
     @Test
     public void chooseMainPage() throws Exception{

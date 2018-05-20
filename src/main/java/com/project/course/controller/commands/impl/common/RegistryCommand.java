@@ -7,6 +7,8 @@ import com.project.course.exception.ServiceException;
 import com.project.course.service.RegUserService;
 import com.project.course.service.ServiceFactory;
 import com.project.course.util.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,10 +21,12 @@ import java.util.regex.Pattern;
  * Created by kleba on 06.05.2018.
  */
 public class RegistryCommand implements Command {
+
+    private Logger logger = LoggerFactory.getLogger(RegistryCommand.class);
+
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse response) {
         HttpSession session =req.getSession();
-
         String login =Validation.injectionProtection(req.getParameter("login"));
         String password =Validation.injectionProtection(req.getParameter("password"));
         String email = Validation.injectionProtection(req.getParameter("email"));
@@ -36,17 +40,18 @@ public class RegistryCommand implements Command {
                     session.setAttribute("message", "Enter your login and password");
                     response.sendRedirect(req.getContextPath() + "/pages/index.jsp");
                 } catch (ServiceException e) {
+                    logger.error("cant reg new user"+e.getMessage());
                     response.sendRedirect(req.getContextPath() + "/pages/reg.jsp");
                 } catch (MailException e) {
+                    logger.error("cant send email"+e.getMessage());
                     response.sendRedirect(req.getContextPath() + "/pages/index.jsp");
                 }
-
             } else {
                 session.setAttribute("message", "Wrong data");
                     response.sendRedirect(req.getContextPath() + "/pages/reg.jsp");
             }
         }catch (IOException e){
-
+            logger.error("wrong response path:"+e.getMessage());
         }
     }
 }

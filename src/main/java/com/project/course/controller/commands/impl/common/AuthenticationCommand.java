@@ -2,11 +2,14 @@ package com.project.course.controller.commands.impl.common;
 
 
 import com.project.course.controller.commands.Command;
+import com.project.course.dto.User;
 import com.project.course.exception.ServiceException;
 import com.project.course.service.LoginService;
 import com.project.course.service.ServiceFactory;
 import com.project.course.util.Roles;
 import com.project.course.util.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -20,25 +23,30 @@ import java.io.IOException;
 public class AuthenticationCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        String role = null;
-        HttpSession session = request.getSession();
-        ServiceFactory serviceFactory = ServiceFactory.getInstatice();
-        LoginService loginService = serviceFactory.getLoginService();
-        String username= Validation.injectionProtection(request.getParameter("username"));
-        String password= Validation.injectionProtection(request.getParameter("password"));
+        User user = null;
+        Logger logger = LoggerFactory.getLogger(AuthenticationCommand.class);
         try {
-            role= loginService.login(username,password);
-            if(role==null||role.isEmpty()){
-                response.sendRedirect(request.getContextPath()+"/pages/index.jsp");
-            }else{
-            request.getSession().setAttribute("name",username);
-            request.getSession().setAttribute("role",role);
-            response.sendRedirect(request.getContextPath()+"?command=getdata");
+            ServiceFactory serviceFactory = ServiceFactory.getInstatice();
+            LoginService loginService = serviceFactory.getLoginService();
+            String username = Validation.injectionProtection(request.getParameter("username"));
+            String password = Validation.injectionProtection(request.getParameter("password"));
+            try {
+                user = loginService.login(username, password);
+                if(user==null){
+                    request.getSession().setAttribute("name", null);
+                    request.getSession().setAttribute("role", null);
+                }else {
+                    request.getSession().setAttribute("name", user.getLogin());
+                    request.getSession().setAttribute("role", user.getRole());
+                }
+                response.sendRedirect(request.getContextPath() + "?command=getdata");
+            } catch (ServiceException e) {
+                logger.error("login failed," + e.getMessage());
+                response.sendRedirect(request.getContextPath() + "/pages/index.jsp");
             }
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }catch (IOException e) {
+            logger.error("wrong response link");
+
         }
     }
 }

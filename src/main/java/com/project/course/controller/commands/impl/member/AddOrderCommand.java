@@ -6,6 +6,8 @@ import com.project.course.service.DetailService;
 import com.project.course.service.OrderService;
 import com.project.course.service.ServiceFactory;
 import com.project.course.util.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,9 @@ import java.io.IOException;
  * Created by kleba on 10.05.2018.
  */
 public class AddOrderCommand implements Command {
+
+    private Logger logger = LoggerFactory.getLogger(AddOrderCommand.class);
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         ServiceFactory serviceFactory = ServiceFactory.getInstatice();
@@ -29,9 +34,9 @@ public class AddOrderCommand implements Command {
             ds.addDetail(names,reasons,orderId);
             response.sendRedirect(request.getContextPath()+"?command=getdata");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("wrong redirect path"+e.getMessage());
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.error("can't add order"+e.getMessage());
         }
     }
 }

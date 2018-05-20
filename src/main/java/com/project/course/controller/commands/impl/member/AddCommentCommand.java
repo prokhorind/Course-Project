@@ -5,6 +5,8 @@ import com.project.course.exception.ServiceException;
 import com.project.course.service.CommentService;
 import com.project.course.service.ServiceFactory;
 import com.project.course.util.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +16,7 @@ import java.io.IOException;
  * Created by kleba on 11.05.2018.
  */
 public class AddCommentCommand implements Command {
+    private Logger logger = LoggerFactory.getLogger(AddCommentCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         ServiceFactory sf =ServiceFactory.getInstatice();
@@ -22,13 +25,11 @@ public class AddCommentCommand implements Command {
         String comment = Validation.injectionProtection( request.getParameter("comment"));
         try {
             cs.addComment(name,comment);
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
-        try {
             response.sendRedirect(request.getContextPath()+"?command=getdata");
+        } catch (ServiceException e) {
+            logger.error("cant add new comment:"+e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("wrong response path"+e.getMessage());
         }
     }
 }
